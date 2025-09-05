@@ -1,0 +1,58 @@
+#BSUB -W 240:00
+#BSUB -o ./run.out
+#BSUB -e ./run.err
+#BSUB -cwd .
+#BSUB -q e80long
+#BSUB -n 10
+#BSUB -M 100
+#BSUB -R rusage[mem=100]
+#BSUB -B
+#BSUB -N
+#BSUB -u aksaw@mdanderson.org 
+#BSUB -J RNA_job
+## explanation of arguments above:
+## -W run-time (wall clock) in hour:min  (required)
+## -o use this or output (stdout) will be sent via email!
+## -e use this or errors (stderr) will be sent via email!
+## -cwd set the current working directory.
+## -q queue name (required) 
+## -n number of processors required (28=entire node)
+## -M memory limit in GB (required). 
+## -R memory reserved in GB (default/minimum is 1GB).
+## -B send email to the user when the job begins (optional).
+## -N send email to the user when the job ends (optional).
+## -u send email to the specified address (required if -B and -N are used).
+##    It is recommended to always include your MD Anderson email address.
+## -J arbitrary job name, letters, dashes, underscores only - no spaces!
+##
+## Memory is specified as GB
+##
+## This script requests a wallclock of 1 hour, 12 CPUs, and 17G of memory, in the short queue
+
+## To submit:  bsub < example.lsf
+
+## All commands below should be valid linux commands
+
+
+
+/rsrch3/scratch/genomic_med/aksaw/PRIT_PROJECT/RNA_seq/salmon-1.8.0_linux_x86_64/bin/salmon  index --gencode -t gencode.vM28.transcripts.fa.gz    -i mouse_reference_transcript_index
+
+
+
+/rsrch3/scratch/genomic_med/aksaw/PRIT_PROJECT/RNA_seq/salmon-1.8.0_linux_x86_64/bin/salmon quant -i mouse_reference_transcript_index -l A -1 rep1/Sample_SPF-FAST_RNA/SPF-FAST_RNA_S7_L001_R1_001.fastq.gz -2 rep1/Sample_SPF-FAST_RNA/SPF-FAST_RNA_S7_L001_R2_001.fastq.gz -p 4 --gcBias --numGibbsSamples 20 --validateMappings -o rep1_quant_SPF-FAST
+
+/rsrch3/scratch/genomic_med/aksaw/PRIT_PROJECT/RNA_seq/salmon-1.8.0_linux_x86_64/bin/salmon quant -i mouse_reference_transcript_index -l A -1 rep1/Sample_SPF-FED_RNA/SPF-FED_RNA_S8_L001_R1_001.fastq.gz -2 rep1/Sample_SPF-FED_RNA/SPF-FED_RNA_S8_L001_R2_001.fastq.gz -p 4 --gcBias --numGibbsSamples 20 --validateMappings -o rep1_quant_SPF-FED
+
+/rsrch3/scratch/genomic_med/aksaw/PRIT_PROJECT/RNA_seq/salmon-1.8.0_linux_x86_64/bin/salmon quant -i mouse_reference_transcript_index -l A -1 rep1/Sample_Tetra-FAST_RNA/Tetra-FAST_RNA_S5_L001_R1_001.fastq.gz -2 rep1/Sample_Tetra-FAST_RNA/Tetra-FAST_RNA_S5_L001_R2_001.fastq.gz -p 4 --gcBias --numGibbsSamples 20 --validateMappings -o rep1_quant_Tetra-FAST
+
+/rsrch3/scratch/genomic_med/aksaw/PRIT_PROJECT/RNA_seq/salmon-1.8.0_linux_x86_64/bin/salmon quant -i mouse_reference_transcript_index -l A -1 rep1/Sample_Tetra-FED_RNA/Tetra-FED_RNA_S6_L001_R1_001.fastq.gz -2 rep1/Sample_Tetra-FED_RNA/Tetra-FED_RNA_S6_L001_R2_001.fastq.gz -p 4 --gcBias --numGibbsSamples 20 --validateMappings -o rep1_quant_Tetra-FED
+
+/rsrch3/scratch/genomic_med/aksaw/PRIT_PROJECT/RNA_seq/salmon-1.8.0_linux_x86_64/bin/salmon quant -i mouse_reference_transcript_index -l A -1  rep2/Sample_SPF-FAST_RNA/SPF-FAST_RNA_S11_R1_001.fastq.gz -2 rep2/Sample_SPF-FAST_RNA/SPF-FAST_RNA_S11_R2_001.fastq.gz  -p 4 --gcBias --numGibbsSamples 20 --validateMappings  -o rep2_quant_SPF-FAST
+
+/rsrch3/scratch/genomic_med/aksaw/PRIT_PROJECT/RNA_seq/salmon-1.8.0_linux_x86_64/bin/salmon quant -i mouse_reference_transcript_index -l A -1  rep2/Sample_SPF-FED_RNA/SPF-FED_RNA_S12_R1_001.fastq.gz -2 rep2/Sample_SPF-FED_RNA/SPF-FED_RNA_S12_R2_001.fastq.gz  -p 4 --gcBias --numGibbsSamples 20 --validateMappings  -o rep2_quant_SPF-FED
+
+/rsrch3/scratch/genomic_med/aksaw/PRIT_PROJECT/RNA_seq/salmon-1.8.0_linux_x86_64/bin/salmon quant -i mouse_reference_transcript_index -l A -1  rep2/Sample_Tetra-FAST_RNA/Tetra-FAST_RNA_S9_R1_001.fastq.gz -2 rep2/Sample_Tetra-FAST_RNA/Tetra-FAST_RNA_S9_R2_001.fastq.gz  -p 4 --gcBias --numGibbsSamples 20 --validateMappings  -o rep2_quant_Tetra-FAST
+
+/rsrch3/scratch/genomic_med/aksaw/PRIT_PROJECT/RNA_seq/salmon-1.8.0_linux_x86_64/bin/salmon quant -i mouse_reference_transcript_index -l A -1  rep2/Sample_Tetra-FED_RNA/Tetra-FED_RNA_S10_R1_001.fastq.gz -2 rep2/Sample_Tetra-FED_RNA/Tetra-FED_RNA_S10_R2_001.fastq.gz  -p 4 --gcBias --numGibbsSamples 20 --validateMappings  -o rep2_quant_Tetra-FED
+
+
