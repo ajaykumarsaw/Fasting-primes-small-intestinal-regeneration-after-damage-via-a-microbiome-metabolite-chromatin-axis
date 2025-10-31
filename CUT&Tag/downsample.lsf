@@ -1,0 +1,62 @@
+#BSUB -W 240:00
+#BSUB -o ./run.out
+#BSUB -e ./run.err
+#BSUB -cwd .
+#BSUB -q e40long
+#BSUB -n 10
+#BSUB -M 100
+#BSUB -R rusage[mem=100]
+#BSUB -B
+#BSUB -N
+#BSUB -u aksaw@mdanderson.org 
+#BSUB -J downsample
+## explanation of arguments above:
+## -W run-time (wall clock) in hour:min  (required)
+## -o use this or output (stdout) will be sent via email!
+## -e use this or errors (stderr) will be sent via email!
+## -cwd set the current working directory.
+## -q queue name (required) 
+## -n number of processors required (28=entire node)
+## -M memory limit in GB (required). 
+## -R memory reserved in GB (default/minimum is 1GB).
+## -B send email to the user when the job begins (optional).
+## -N send email to the user when the job ends (optional).
+## -u send email to the specified address (required if -B and -N are used).
+##   It is recommended to always include your MD Anderson email address.
+## -J arbitrary job name, letters, dashes, underscores only - no spaces!
+##
+## Memory is specified as GB
+##
+## This script requests a wallclock of 1 hour, 12 CPUs, and 17G of memory, in the short queue
+
+## To submit:  bsub < example.lsf
+
+## All commands below should be valid linux commands
+
+
+
+module load samtools  sambamba
+
+
+python3 down_sample.py    ../../rep1/TETRA/Trimmed/Tetra-Fast_H3K27ac_S11.flagstat  17717605     ../../rep1/TETRA/Trimmed/Tetra-Fast_H3K27ac_S11.sorted.bam       downsampled_rep1_Tetra-Fast_H3K27ac_S11.sorted.bam    log  
+python3 down_sample.py    ../../rep1/TETRA/Trimmed/Tetra-Fast_IgG_M_S12.flagstat  17717605      ../../rep1/TETRA/Trimmed/Tetra-Fast_IgG_M_S12.sorted.bam        downsampled_rep1_Tetra-Fast_IgG_M_S12.sorted.bam  log  
+python3 down_sample.py    ../../rep1/SPF/Trimmed/SPF-Fast_H3K27ac_S11.flagstat  17717605  ../../rep1/SPF/Trimmed/SPF-Fast_H3K27ac_S11.sorted.bam     downsampled_rep1_SPF-Fast_H3K27ac_S11.sorted.bam    log  
+python3 down_sample.py    ../../rep1/SPF/Trimmed/SPF-Fast_IgG_M_S12.flagstat   17717605  ../../rep1/SPF/Trimmed/SPF-Fast_IgG_M_S12.sorted.bam        downsampled_rep1_SPF-Fast_IgG_M_S12.sorted.bam  log  
+
+
+python3	down_sample.py	../../rep2/TETRA/Trimmed/Tetra-Fast_H3K27ac_2_S7.flagstat  17717605     ../../rep2/TETRA/Trimmed/Tetra-Fast_H3K27ac_2_S7.sorted.bam	downsampled_rep2_Tetra-Fast_H3K27ac_2_S7.sorted.bam	log
+python3	down_sample.py	../../rep2/TETRA/Trimmed/Tetra-Fast_IgG_M_2_S8.flagstat  17717605     ../../rep2/TETRA/Trimmed/Tetra-Fast_IgG_M_2_S8.sorted.bam	downsampled_rep2_Tetra-Fast_IgG_M_2_S8.sorted.bam	log
+python3	down_sample.py	../../rep2/SPF/Trimmed/SPF-Fast_H3K27ac_2_S7.flagstat  17717605     ../../rep2/SPF/Trimmed/SPF-Fast_H3K27ac_2_S7.sorted.bam	downsampled_rep2_SPF-Fast_H3K27ac_2_S7.sorted.bam	log
+python3	down_sample.py	../../rep2/SPF/Trimmed/SPF-Fast_IgG_M_2_S8.flagstat  17717605     ../../rep2/SPF/Trimmed/SPF-Fast_IgG_M_2_S8.sorted.bam	downsampled_rep2_SPF-Fast_IgG_M_2_S8.sorted.bam	log
+
+
+python3 down_sample.py    ../../rep1/TETRA/Trimmed/Tetra-Fed_H3K27ac_S5.flagstat  15002728     ../../rep1/TETRA/Trimmed/Tetra-Fed_H3K27ac_S5.sorted.bam       downsampled_rep1_Tetra-Fed_H3K27ac_S5.sorted.bam     log  
+python3 down_sample.py    ../../rep1/TETRA/Trimmed/Tetra-Fed_IgG_M_S6.flagstat  15002728      ../../rep1/TETRA/Trimmed/Tetra-Fed_IgG_M_S6.sorted.bam        downsampled_rep1_Tetra-Fed_IgG_M_S6.sorted.bam  log  
+python3 down_sample.py    ../../rep1/SPF/Trimmed/SPF-Fed_H3K27ac_S5.flagstat   15002728  ../../rep1/SPF/Trimmed/SPF-Fed_H3K27ac_S5.sorted.bam       downsampled_rep1_SPF-Fed_H3K27ac_S5.sorted.bam        log  
+python3 down_sample.py    ../../rep1/SPF/Trimmed/SPF-Fed_IgG_M_S6.flagstat   15002728  ../../rep1/SPF/Trimmed/SPF-Fed_IgG_M_S6.sorted.bam        downsampled_rep1_SPF-Fed_IgG_M_S6.sorted.bam  log  
+
+
+python3	down_sample.py	../../rep2/TETRA/Trimmed/Tetra-Fed_H3K27ac_2_S3.flagstat  15002728     ../../rep2/TETRA/Trimmed/Tetra-Fed_H3K27ac_2_S3.sorted.bam	downsampled_rep2_Tetra-Fed_H3K27ac_2_S3.sorted.bam  log
+python3	down_sample.py	../../rep2/TETRA/Trimmed/Tetra-Fed_IgG_M_2_S4.flagstat  15002728     ../../rep2/TETRA/Trimmed/Tetra-Fed_IgG_M_2_S4.sorted.bam	downsampled_rep2_Tetra-Fed_IgG_M_2_S4.sorted.bam	log
+python3	down_sample.py	../../rep2/SPF/Trimmed/SPF-Fed_H3K27ac_2_S3.flagstat  15002728     ../../rep2/SPF/Trimmed/SPF-Fed_H3K27ac_2_S3.sorted.bam	downsampled_rep2_SPF-Fed_H3K27ac_2_S3.sorted.bam	log
+python3	down_sample.py	../../rep2/SPF/Trimmed/SPF-Fed_IgG_M_2_S4.flagstat  15002728     ../../rep2/SPF/Trimmed/SPF-Fed_IgG_M_2_S4.sorted.bam	downsampled_rep2_SPF-Fed_IgG_M_2_S4.sorted.bam	log

@@ -1,0 +1,75 @@
+#BSUB -W 240:00
+#BSUB -o ./run.out
+#BSUB -e ./run.err
+#BSUB -cwd .
+#BSUB -q long
+#BSUB -n 10
+#BSUB -M 100
+#BSUB -R rusage[mem=100]
+#BSUB -B
+#BSUB -N
+#BSUB -u aksaw@mdanderson.org 
+#BSUB -J Chip_H3k4me1
+## explanation of arguments above:
+## -W run-time (wall clock) in hour:min  (required)
+## -o use this or output (stdout) will be sent via email!
+## -e use this or errors (stderr) will be sent via email!
+## -cwd set the current working directory.
+## -q queue name (required) 
+## -n number of processors required (28=entire node)
+## -M memory limit in GB (required). 
+## -R memory reserved in GB (default/minimum is 1GB).
+## -B send email to the user when the job begins (optional).
+## -N send email to the user when the job ends (optional).
+## -u send email to the specified address (required if -B and -N are used).
+##    It is recommended to always include your MD Anderson email address.
+## -J arbitrary job name, letters, dashes, underscores only - no spaces!
+##
+## Memory is specified as GB
+##
+## This script requests a wallclock of 1 hour, 12 CPUs, and 17G of memory, in the short queue
+
+## To submit:  bsub < example.lsf
+
+## All commands below should be valid linux commands
+
+module load fastqc/0.11.8
+
+for f1 in *.fastq.gz
+do
+fastqc  $f1
+done
+
+module load multiqc/1.8
+
+multiqc  .
+
+module load trim_galore/0.6.5
+
+mkdir Trim_glore
+
+for f1 in *.fastq.gz
+do
+trim_galore  --quality 20  --fastqc  --length 25  --output_dir Trim_glore/   $f1
+done
+
+cd Trim_glore
+
+multiqc  .
+
+module load python/3.6.4-anaconda
+module load bowtie2/2.4.1
+module load samtools
+
+
+for f1 in *fq.gz
+do
+bowtie2 -x /rsrch3/home/genomic_med/aksaw/ajay/GRCm38_39_bowtie2/GRCM38/bowtie2/mm10_index  -U $f1  -S ${f1%%_trimmed.fq.gz}.sam -p 30
+samtools view -bo ${f1%%_trimmed.fq.gz}.bam  ${f1%%_trimmed.fq.gz}.sam
+samtools sort ${f1%%_trimmed.fq.gz}.bam  -o   ${f1%%_trimmed.fq.gz}.sorted.bam
+samtools index ${f1%%_trimmed.fq.gz}.sorted.bam
+samtools flagstat ${f1%%_trimmed.fq.gz}.bam > ${f1%%_trimmed.fq.gz}.flagstat
+done
+
+
+
