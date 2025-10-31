@@ -1,0 +1,5 @@
+"","names","donor","condition"
+"rep1_quant_SPF-FAST","rep1_quant_SPF-FAST","FAST","A_control"
+"rep2_quant_SPF-FAST","rep2_quant_SPF-FAST","FAST","A_control"
+"rep1_quant_SPF-FED","rep1_quant_SPF-FED","FED","B_case"
+"rep2_quant_SPF-FED","rep2_quant_SPF-FED","FED","B_case"
